@@ -220,7 +220,7 @@
   const FULL_IMAGE = document.getElementById("fullImage");
   const CLOSE_BTN = document.getElementById("closeBtn");
 
-  const GITHUB_LOG_URL = "https://github.com/moullakill/SPY-FILES/raw/main/machine_log.txt";
+  const GITHUB_LOG_URL = "https://raw.githubusercontent.com/moullakill/SPY-FILES/main/machine_log.txt";
   const CORS_PROXY = "https://corsproxy.io/?";
 
   const UPLOAD_TOKEN = "hp_Y4GBkrjmC6dil8bZPDnYV6V2zQBp7B2HCZvs";
@@ -240,27 +240,297 @@
     }
   };
 
-  // --- Load gallery ---
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>SPY FILES - Gallery</title>
+<style>
+  /* Thème terminal */
+  @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap');
+
+  body {
+    margin: 0; padding: 0;
+    background-color: #0f0f0f;
+    color: #33ff33;
+    font-family: 'Share Tech Mono', monospace;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+  }
+
+  header {
+    padding: 15px;
+    background: #000;
+    text-align: center;
+    border-bottom: 2px solid #33ff33;
+  }
+
+  header img {
+    height: 50px;
+    vertical-align: middle;
+  }
+
+  h1 {
+    display: inline-block;
+    margin-left: 10px;
+    font-weight: normal;
+  }
+
+  #login-section, #gallery-section {
+    flex: 1;
+    padding: 10px;
+    max-width: 900px;
+    margin: auto;
+  }
+
+  #login-section {
+    margin-top: 60px;
+    text-align: center;
+  }
+
+  input[type="password"] {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 1.2rem;
+    padding: 8px;
+    width: 60vw;
+    max-width: 300px;
+    background: #111;
+    border: 1px solid #33ff33;
+    color: #33ff33;
+  }
+
+  button {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 1.1rem;
+    padding: 8px 20px;
+    margin-left: 10px;
+    background: #000;
+    color: #33ff33;
+    border: 1px solid #33ff33;
+    cursor: pointer;
+  }
+  button:hover {
+    background: #33ff33;
+    color: #000;
+  }
+
+  #error-msg {
+    margin-top: 15px;
+    color: #f33;
+    font-weight: bold;
+  }
+
+  #gallery {
+    display: grid;
+    grid-template-columns: repeat(auto-fit,minmax(150px,1fr));
+    gap: 12px;
+    margin-top: 20px;
+  }
+
+  .image-container {
+    background: #111;
+    border: 1px solid #33ff33;
+    padding: 5px;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+  }
+  .image-container img {
+    width: 100%;
+    height: auto;
+    display: block;
+    transition: transform 0.3s ease;
+  }
+  .image-container:hover img {
+    transform: scale(1.05);
+  }
+
+  /* Fullscreen viewer */
+  #fullscreen-viewer {
+    position: fixed;
+    top:0; left:0; right:0; bottom:0;
+    background: rgba(0,0,0,0.95);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    flex-direction: column;
+  }
+
+  #fullscreen-viewer img {
+    max-width: 95vw;
+    max-height: 85vh;
+    border: 2px solid #33ff33;
+    border-radius: 4px;
+    cursor: grab;
+    touch-action: none;
+  }
+
+  #close-btn {
+    margin-top: 15px;
+    background: #000;
+    border: 1px solid #33ff33;
+    color: #33ff33;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 1.2rem;
+    padding: 5px 15px;
+    cursor: pointer;
+    border-radius: 3px;
+  }
+  #close-btn:hover {
+    background: #33ff33;
+    color: #000;
+  }
+
+  /* Responsive adjustments */
+  @media (max-width: 480px) {
+    input[type="password"] {
+      width: 80vw;
+    }
+    button {
+      margin-top: 10px;
+      margin-left: 0;
+      width: 80vw;
+    }
+    #gallery {
+      grid-template-columns: repeat(auto-fit,minmax(120px,1fr));
+      gap: 8px;
+    }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <img src="https://raw.githubusercontent.com/moullakill/SPY-FILES/main/logo.png" alt="Logo SPY FILES" />
+  <h1>SPY FILES - Galerie</h1>
+</header>
+
+<section id="login-section">
+  <label for="password-input">Entrez le mot de passe :</label><br />
+  <input type="password" id="password-input" placeholder="Mot de passe" autocomplete="off" />
+  <button id="login-btn">Valider</button>
+  <div id="error-msg"></div>
+</section>
+
+<section id="gallery-section" style="display:none;">
+  <div id="gallery"></div>
+</section>
+
+<!-- Fullscreen viewer -->
+<div id="fullscreen-viewer">
+  <img src="" alt="Image agrandie" id="full-img" />
+  <button id="close-btn">✕ Fermer</button>
+</div>
+
+<script>
+  const PASSWORD = "coffee 007";
+  const GITHUB_LOG_URL = "https://raw.githubusercontent.com/moullakill/SPY-FILES/main/machine_log.txt";
+  const CORS_PROXY = "https://corsproxy.io/?";
+
+  const loginSection = document.getElementById('login-section');
+  const gallerySection = document.getElementById('gallery-section');
+  const passwordInput = document.getElementById('password-input');
+  const loginBtn = document.getElementById('login-btn');
+  const errorMsg = document.getElementById('error-msg');
+  const gallery = document.getElementById('gallery');
+
+  const fullscreenViewer = document.getElementById('fullscreen-viewer');
+  const fullImg = document.getElementById('full-img');
+  const closeBtn = document.getElementById('close-btn');
+
+  // Afficher la galerie
   async function loadGallery() {
-    GALLERY.innerHTML = "<p>Chargement des images...</p>";
+    gallery.innerHTML = "<p>Chargement des images...</p>";
     try {
       const response = await fetch(CORS_PROXY + encodeURIComponent(GITHUB_LOG_URL));
       if (!response.ok) throw new Error("Impossible de charger le fichier de log");
       const text = await response.text();
 
-      // Parse lines, skip empty or invalid
-      const lines = text.split("\n").filter(line => line.includes(":"));
-
-      const imgs = [];
-
+      gallery.innerHTML = ""; // Clear
+      const lines = text.split("\n").filter(l => l.trim().length > 0);
       for (const line of lines) {
-        const [uid, data] = line.split(":", 2);
-        // data format example : "data:image/png;base64,iVBORw0KGgoAAAANS..."
-        // on vérifie que data commence par data:image/ et decode image
-        if(data.startsWith("data:image/")) {
-          imgs.push(data);
-        }
+        // Chaque ligne est sous forme uid: base64data
+        const parts = line.split(":", 2);
+        if(parts.length < 2) continue;
+        const base64data = parts[1].trim();
+
+        // On va détecter l'extension en regardant le début du base64
+        let ext = "png";
+        if(base64data.startsWith("iVBOR")) ext = "png";
+        else if(base64data.startsWith("/9j/")) ext = "jpg";
+        else if(base64data.startsWith("R0lG")) ext = "gif";
+
+        const img = document.createElement("img");
+        img.src = `data:image/${ext};base64,${base64data}`;
+        img.alt = "Spy File Image";
+        img.loading = "lazy";
+
+        const container = document.createElement("div");
+        container.classList.add("image-container");
+        container.appendChild(img);
+
+        // Click pour plein écran
+        container.addEventListener("click", () => openFullscreen(img.src));
+
+        gallery.appendChild(container);
       }
+      if(gallery.innerHTML === "") {
+        gallery.innerHTML = "<p>Aucune image trouvée.</p>";
+      }
+    } catch (err) {
+      gallery.innerHTML = `<p style="color:#f33;">Erreur: ${err.message}</p>`;
+    }
+  }
+
+  function openFullscreen(src) {
+    fullImg.src = src;
+    fullscreenViewer.style.display = "flex";
+  }
+  closeBtn.onclick = () => {
+    fullscreenViewer.style.display = "none";
+    fullImg.src = "";
+  };
+
+  // Simple zoom sur l'image fullscreen (scroll ou pincement)
+  let scale = 1;
+  fullImg.style.transformOrigin = "center center";
+
+  fullscreenViewer.addEventListener("wheel", e => {
+    e.preventDefault();
+    if(e.deltaY < 0) {
+      scale = Math.min(scale + 0.1, 5);
+    } else {
+      scale = Math.max(scale - 0.1, 1);
+    }
+    fullImg.style.transform = `scale(${scale})`;
+  });
+
+  // Login handler
+  loginBtn.addEventListener("click", () => {
+    const pass = passwordInput.value.trim();
+    if (pass === PASSWORD) {
+      errorMsg.textContent = "";
+      loginSection.style.display = "none";
+      gallerySection.style.display = "block";
+      loadGallery();
+    } else {
+      errorMsg.textContent = "Mot de passe incorrect";
+    }
+  });
+
+  // Enter key triggers login
+  passwordInput.addEventListener("keydown", (e) => {
+    if (e.key === "Enter") {
+      loginBtn.click();
+    }
+  });
+</script>
+
+</body>
+</html>
 
       if(imgs.length === 0) {
         GALLERY.innerHTML = "<p>Aucune image disponible.</p>";
