@@ -3,7 +3,8 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Spy Files - Gallery Terminal</title>
+<title>SPY FILES - Terminal Gallery</title>
+<link rel="icon" href="https://raw.githubusercontent.com/moullakill/SPY-FILES/main/logo.png">
 <style>
   /* Reset */
   * {
@@ -13,22 +14,23 @@
   body {
     margin: 0;
     font-family: "Courier New", Courier, monospace;
-    background: #0b0c0d;
-    color: #33ff33;
+    background: #0b0c0d; /* Fond plus sombre du code 1 */
+    color: #33ff33; /* Vert éclatant */
     display: flex;
     flex-direction: column;
     min-height: 100vh;
   }
 
   header {
-    background: #002200;
+    background: #002200; /* Vert foncé du code 1 */
     display: flex;
     align-items: center;
     padding: 10px 20px;
     gap: 10px;
+    border-bottom: 2px solid #33ff33; /* Bordure du code 2 */
   }
   header img {
-    height: 40px;
+    height: 40px; /* Taille du logo du code 1 */
     width: auto;
   }
   header h1 {
@@ -52,49 +54,61 @@
     display: flex;
     flex-direction: column;
     gap: 15px;
+    text-align: center; /* Centrer les éléments */
   }
   #passwordSection input[type="password"] {
     padding: 10px;
     font-size: 1.1rem;
-    background: #001100;
+    background: #001100; /* Fond input du code 1 */
     border: 2px solid #33ff33;
     color: #33ff33;
     outline-offset: 2px;
+    width: 100%; /* Largeur pour mobile */
   }
   #passwordSection button {
     padding: 10px;
     font-size: 1.1rem;
-    background: #004400;
+    background: #004400; /* Fond bouton du code 1 */
     border: none;
     color: #33ff33;
     cursor: pointer;
     transition: background 0.3s;
+    width: 100%; /* Largeur pour mobile */
   }
   #passwordSection button:hover {
-    background: #008800;
+    background: #008800; /* Hover du code 1 */
   }
   #passwordError {
     color: #ff4444;
     font-weight: bold;
+    margin-top: 15px; /* Marge du code 2 */
   }
 
   /* Gallery */
   #gallery {
-    display: none;
-    margin-top: 10px;
-    gap: 10px;
+    display: none; /* Cachée par défaut */
+    margin-top: 20px; /* Marge du code 2 */
+    gap: 12px; /* Espacement du code 2 */
     display: grid;
-    grid-template-columns: repeat(auto-fill,minmax(120px,1fr));
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); /* Taille d'images du code 2 */
     justify-items: center;
+  }
+  .image-container { /* Conteneur d'image du code 2 */
+    background: #111;
+    border: 1px solid #33ff33;
+    padding: 5px;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
   }
   #gallery img {
     max-width: 100%;
-    border: 2px solid #33ff33;
-    cursor: pointer;
-    border-radius: 4px;
-    transition: transform 0.2s ease;
+    height: auto; /* Ajustement pour galerie */
+    display: block;
+    transition: transform 0.3s ease; /* Transition du code 2 */
+    border-radius: 4px; /* Bordure arrondie du code 1 */
   }
-  #gallery img:hover {
+  .image-container:hover img {
     transform: scale(1.05);
   }
 
@@ -114,21 +128,33 @@
     max-height: 80vh;
     object-fit: contain;
     cursor: grab;
+    border: 2px solid #33ff33; /* Bordure du code 2 */
+    border-radius: 4px;
+    touch-action: none; /* Empêche le défilement par défaut */
   }
-  #closeBtn {
-    position: absolute;
-    top: 20px;
-    right: 25px;
-    font-size: 2rem;
+  #closeBtn { /* Style du code 1 avec le texte du code 2 */
+    margin-top: 15px;
+    background: #000;
+    border: 1px solid #33ff33;
     color: #33ff33;
+    font-family: 'Courier New', Courier, monospace; /* Assure la cohérence de la police */
+    font-size: 1.2rem;
+    padding: 5px 15px;
     cursor: pointer;
-    user-select: none;
+    border-radius: 3px;
   }
+  #closeBtn:hover {
+    background: #33ff33;
+    color: #000;
+  }
+
 
   /* Upload */
   #uploadSection {
     margin-top: 30px;
     max-width: 400px;
+    margin-left: auto;
+    margin-right: auto;
   }
   #uploadSection label {
     display: block;
@@ -168,7 +194,7 @@
       margin: 20px auto;
     }
     #gallery {
-      grid-template-columns: repeat(auto-fill,minmax(90px,1fr));
+      grid-template-columns: repeat(auto-fill, minmax(90px, 1fr)); /* Taille d'images mobile du code 1 */
     }
   }
 </style>
@@ -177,17 +203,19 @@
 
 <header>
   <img src="https://raw.githubusercontent.com/moullakill/SPY-FILES/main/logo.png" alt="Spy Files Logo" />
-  <h1>Spy Files - Terminal Gallery</h1>
+  <h1>SPY FILES - Terminal Gallery</h1>
 </header>
 
 <main>
   <section id="passwordSection">
-    <input type="password" id="passwordInput" placeholder="Entrez le mot de passe" autocomplete="off" />
-    <button id="passwordBtn">Valider</button>
+    <h1>> ACCÈS À LA GALERIE SÉCURISÉE</h1> <input type="password" id="passwordInput" placeholder="Entrez le mot de passe" autocomplete="off" />
+    <button id="passwordBtn">VALIDER</button>
     <div id="passwordError"></div>
   </section>
 
-  <section id="gallery"></section>
+  <section id="gallerySection" style="display:none;">
+    <h2>> GALERIE D’IMAGES DÉCODÉES</h2> <div id="gallery"></div>
+  </section>
 
   <section id="uploadSection" style="display:none;">
     <label for="fileInput">Téléverser un fichier image :</label>
@@ -197,19 +225,21 @@
   </section>
 </main>
 
-<!-- Fullscreen overlay -->
 <div id="fullscreenOverlay">
-  <div id="closeBtn">&times;</div>
   <img id="fullImage" src="" alt="Image plein écran" />
-</div>
+  <button id="closeBtn">✕ Fermer</button> </div>
 
 <script>
-  const PASSWORD = "coffee007";
+  const PASSWORD = "coffee 007"; // Mot de passe du code 2
+  const GITHUB_LOG_URL = "https://raw.githubusercontent.com/moullakill/SPY-FILES/main/machine_log.txt";
+  const CORS_PROXY = "https://corsproxy.io/?";
+
   const PASSWORD_SECTION = document.getElementById("passwordSection");
   const PASSWORD_INPUT = document.getElementById("passwordInput");
   const PASSWORD_BTN = document.getElementById("passwordBtn");
   const PASSWORD_ERROR = document.getElementById("passwordError");
 
+  const GALLERY_SECTION = document.getElementById("gallerySection"); // Nouvelle section pour la galerie
   const GALLERY = document.getElementById("gallery");
   const UPLOAD_SECTION = document.getElementById("uploadSection");
   const FILE_INPUT = document.getElementById("fileInput");
@@ -220,11 +250,8 @@
   const FULL_IMAGE = document.getElementById("fullImage");
   const CLOSE_BTN = document.getElementById("closeBtn");
 
-  const GITHUB_LOG_URL = "https://raw.githubusercontent.com/moullakill/SPY-FILES/main/machine_log.txt";
-  const CORS_PROXY = "https://corsproxy.io/?";
-
-  const UPLOAD_TOKEN = "hp_Y4GBkrjmC6dil8bZPDnYV6V2zQBp7B2HCZvs";
-  const UPLOAD_API_URL = "https://api.web3.storage/upload";
+  const UPLOAD_TOKEN = "hp_Y4GBkrjmC6dil8bZPDnYV6V2zQBp7B2HCZvs"; // Token du code 1
+  const UPLOAD_API_URL = "https://api.web3.storage/upload"; // URL d'upload du code 1
 
   // --- Password check ---
   PASSWORD_BTN.onclick = () => {
@@ -232,332 +259,80 @@
     if(val === PASSWORD) {
       PASSWORD_ERROR.textContent = "";
       PASSWORD_SECTION.style.display = "none";
-      GALLERY.style.display = "grid";
+      GALLERY_SECTION.style.display = "flex"; // Afficher la section complète de la galerie
       UPLOAD_SECTION.style.display = "block";
       loadGallery();
     } else {
-      PASSWORD_ERROR.textContent = "Mot de passe incorrect";
+      PASSWORD_ERROR.textContent = "Mot de passe incorrect.";
     }
   };
 
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>SPY FILES - Gallery</title>
-<style>
-  /* Thème terminal */
-  @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap');
-
-  body {
-    margin: 0; padding: 0;
-    background-color: #0f0f0f;
-    color: #33ff33;
-    font-family: 'Share Tech Mono', monospace;
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh;
-  }
-
-  header {
-    padding: 15px;
-    background: #000;
-    text-align: center;
-    border-bottom: 2px solid #33ff33;
-  }
-
-  header img {
-    height: 50px;
-    vertical-align: middle;
-  }
-
-  h1 {
-    display: inline-block;
-    margin-left: 10px;
-    font-weight: normal;
-  }
-
-  #login-section, #gallery-section {
-    flex: 1;
-    padding: 10px;
-    max-width: 900px;
-    margin: auto;
-  }
-
-  #login-section {
-    margin-top: 60px;
-    text-align: center;
-  }
-
-  input[type="password"] {
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 1.2rem;
-    padding: 8px;
-    width: 60vw;
-    max-width: 300px;
-    background: #111;
-    border: 1px solid #33ff33;
-    color: #33ff33;
-  }
-
-  button {
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 1.1rem;
-    padding: 8px 20px;
-    margin-left: 10px;
-    background: #000;
-    color: #33ff33;
-    border: 1px solid #33ff33;
-    cursor: pointer;
-  }
-  button:hover {
-    background: #33ff33;
-    color: #000;
-  }
-
-  #error-msg {
-    margin-top: 15px;
-    color: #f33;
-    font-weight: bold;
-  }
-
-  #gallery {
-    display: grid;
-    grid-template-columns: repeat(auto-fit,minmax(150px,1fr));
-    gap: 12px;
-    margin-top: 20px;
-  }
-
-  .image-container {
-    background: #111;
-    border: 1px solid #33ff33;
-    padding: 5px;
-    cursor: pointer;
-    position: relative;
-    overflow: hidden;
-  }
-  .image-container img {
-    width: 100%;
-    height: auto;
-    display: block;
-    transition: transform 0.3s ease;
-  }
-  .image-container:hover img {
-    transform: scale(1.05);
-  }
-
-  /* Fullscreen viewer */
-  #fullscreen-viewer {
-    position: fixed;
-    top:0; left:0; right:0; bottom:0;
-    background: rgba(0,0,0,0.95);
-    display: none;
-    justify-content: center;
-    align-items: center;
-    z-index: 1000;
-    flex-direction: column;
-  }
-
-  #fullscreen-viewer img {
-    max-width: 95vw;
-    max-height: 85vh;
-    border: 2px solid #33ff33;
-    border-radius: 4px;
-    cursor: grab;
-    touch-action: none;
-  }
-
-  #close-btn {
-    margin-top: 15px;
-    background: #000;
-    border: 1px solid #33ff33;
-    color: #33ff33;
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 1.2rem;
-    padding: 5px 15px;
-    cursor: pointer;
-    border-radius: 3px;
-  }
-  #close-btn:hover {
-    background: #33ff33;
-    color: #000;
-  }
-
-  /* Responsive adjustments */
-  @media (max-width: 480px) {
-    input[type="password"] {
-      width: 80vw;
+  // Activer la connexion avec la touche Entrée
+  PASSWORD_INPUT.addEventListener("keydown", (e) => {
+    if (e.key === "Enter") {
+      PASSWORD_BTN.click();
     }
-    button {
-      margin-top: 10px;
-      margin-left: 0;
-      width: 80vw;
-    }
-    #gallery {
-      grid-template-columns: repeat(auto-fit,minmax(120px,1fr));
-      gap: 8px;
-    }
-  }
-</style>
-</head>
-<body>
+  });
 
-<header>
-  <img src="https://raw.githubusercontent.com/moullakill/SPY-FILES/main/logo.png" alt="Logo SPY FILES" />
-  <h1>SPY FILES - Galerie</h1>
-</header>
-
-<section id="login-section">
-  <label for="password-input">Entrez le mot de passe :</label><br />
-  <input type="password" id="password-input" placeholder="Mot de passe" autocomplete="off" />
-  <button id="login-btn">Valider</button>
-  <div id="error-msg"></div>
-</section>
-
-<section id="gallery-section" style="display:none;">
-  <div id="gallery"></div>
-</section>
-
-<!-- Fullscreen viewer -->
-<div id="fullscreen-viewer">
-  <img src="" alt="Image agrandie" id="full-img" />
-  <button id="close-btn">✕ Fermer</button>
-</div>
-
-<script>
-  const PASSWORD = "coffee 007";
-  const GITHUB_LOG_URL = "https://raw.githubusercontent.com/moullakill/SPY-FILES/main/machine_log.txt";
-  const CORS_PROXY = "https://corsproxy.io/?";
-
-  const loginSection = document.getElementById('login-section');
-  const gallerySection = document.getElementById('gallery-section');
-  const passwordInput = document.getElementById('password-input');
-  const loginBtn = document.getElementById('login-btn');
-  const errorMsg = document.getElementById('error-msg');
-  const gallery = document.getElementById('gallery');
-
-  const fullscreenViewer = document.getElementById('fullscreen-viewer');
-  const fullImg = document.getElementById('full-img');
-  const closeBtn = document.getElementById('close-btn');
-
-  // Afficher la galerie
+  // --- Gallery loading ---
   async function loadGallery() {
-    gallery.innerHTML = "<p>Chargement des images...</p>";
+    GALLERY.innerHTML = "<p>Chargement des images...</p>";
     try {
+      // Utilisation du proxy CORS pour accéder au log (du code 1)
       const response = await fetch(CORS_PROXY + encodeURIComponent(GITHUB_LOG_URL));
-      if (!response.ok) throw new Error("Impossible de charger le fichier de log");
+      if (!response.ok) throw new Error("Impossible de charger le fichier de log.");
       const text = await response.text();
 
-      gallery.innerHTML = ""; // Clear
+      GALLERY.innerHTML = ""; // Nettoyer
       const lines = text.split("\n").filter(l => l.trim().length > 0);
-      for (const line of lines) {
-        // Chaque ligne est sous forme uid: base64data
-        const parts = line.split(":", 2);
-        if(parts.length < 2) continue;
-        const base64data = parts[1].trim();
 
-        // On va détecter l'extension en regardant le début du base64
-        let ext = "png";
-        if(base64data.startsWith("iVBOR")) ext = "png";
-        else if(base64data.startsWith("/9j/")) ext = "jpg";
-        else if(base64data.startsWith("R0lG")) ext = "gif";
-
-        const img = document.createElement("img");
-        img.src = `data:image/${ext};base64,${base64data}`;
-        img.alt = "Spy File Image";
-        img.loading = "lazy";
-
-        const container = document.createElement("div");
-        container.classList.add("image-container");
-        container.appendChild(img);
-
-        // Click pour plein écran
-        container.addEventListener("click", () => openFullscreen(img.src));
-
-        gallery.appendChild(container);
-      }
-      if(gallery.innerHTML === "") {
-        gallery.innerHTML = "<p>Aucune image trouvée.</p>";
-      }
-    } catch (err) {
-      gallery.innerHTML = `<p style="color:#f33;">Erreur: ${err.message}</p>`;
-    }
-  }
-
-  function openFullscreen(src) {
-    fullImg.src = src;
-    fullscreenViewer.style.display = "flex";
-  }
-  closeBtn.onclick = () => {
-    fullscreenViewer.style.display = "none";
-    fullImg.src = "";
-  };
-
-  // Simple zoom sur l'image fullscreen (scroll ou pincement)
-  let scale = 1;
-  fullImg.style.transformOrigin = "center center";
-
-  fullscreenViewer.addEventListener("wheel", e => {
-    e.preventDefault();
-    if(e.deltaY < 0) {
-      scale = Math.min(scale + 0.1, 5);
-    } else {
-      scale = Math.max(scale - 0.1, 1);
-    }
-    fullImg.style.transform = `scale(${scale})`;
-  });
-
-  // Login handler
-  loginBtn.addEventListener("click", () => {
-    const pass = passwordInput.value.trim();
-    if (pass === PASSWORD) {
-      errorMsg.textContent = "";
-      loginSection.style.display = "none";
-      gallerySection.style.display = "block";
-      loadGallery();
-    } else {
-      errorMsg.textContent = "Mot de passe incorrect";
-    }
-  });
-
-  // Enter key triggers login
-  passwordInput.addEventListener("keydown", (e) => {
-    if (e.key === "Enter") {
-      loginBtn.click();
-    }
-  });
-</script>
-
-</body>
-</html>
-
-      if(imgs.length === 0) {
+      if(lines.length === 0) {
         GALLERY.innerHTML = "<p>Aucune image disponible.</p>";
         return;
       }
 
-      // Affiche images
-      GALLERY.innerHTML = "";
-      imgs.forEach(src => {
-        const img = document.createElement("img");
-        img.src = src;
-        img.alt = "Spy File Image";
-        img.loading = "lazy";
-        img.onclick = () => openFullscreen(src);
-        GALLERY.appendChild(img);
-      });
+      for (const line of lines) {
+        if (!line.includes(':')) continue;
 
+        const [uid, base64data] = line.split(":", 2);
+        const cleanBase64 = base64data.trim();
+        const mime = detectMime(cleanBase64); // Utilisation de detectMime du code 2
+
+        if (mime) {
+          const img = document.createElement("img");
+          img.src = `data:${mime};base64,${cleanBase64}`;
+          img.alt = uid; // Alt text avec l'UID
+
+          const container = document.createElement("div"); // Conteneur pour l'effet hover
+          container.classList.add("image-container");
+          container.appendChild(img);
+
+          container.onclick = () => openFullscreen(img.src);
+          GALLERY.appendChild(container);
+        }
+      }
+      if(GALLERY.innerHTML === "") {
+        GALLERY.innerHTML = "<p>Aucune image trouvée.</p>";
+      }
     } catch(err) {
       GALLERY.innerHTML = `<p style="color:#f33;">Erreur: ${err.message}</p>`;
     }
+  }
+
+  // Détecte le type MIME de l'image (du code 2)
+  function detectMime(b64) {
+    if (b64.startsWith("/9j/")) return "image/jpeg";
+    if (b64.startsWith("iVBOR")) return "image/png";
+    if (b64.startsWith("R0lGOD")) return "image/gif";
+    if (b64.startsWith("UklGR")) return "image/webp";
+    return null;
   }
 
   // --- Fullscreen image ---
   function openFullscreen(src) {
     FULL_IMAGE.src = src;
     FULLSCREEN_OVERLAY.style.display = "flex";
-    FULL_IMAGE.style.transform = "scale(1)";
+    FULL_IMAGE.style.transform = "scale(1)"; // Réinitialise le zoom
     currentScale = 1;
   }
   CLOSE_BTN.onclick = () => {
@@ -565,7 +340,7 @@
     FULL_IMAGE.src = "";
   };
 
-  // Zoom with mousewheel on fullscreen image
+  // Zoom with mousewheel on fullscreen image (du code 1)
   let currentScale = 1;
   FULL_IMAGE.addEventListener("wheel", e => {
     e.preventDefault();
@@ -574,7 +349,7 @@
     FULL_IMAGE.style.transform = `scale(${currentScale})`;
   });
 
-  // --- Upload ---
+  // --- Upload --- (du code 1)
   UPLOAD_BTN.onclick = async () => {
     if (!FILE_INPUT.files.length) {
       UPLOAD_STATUS.textContent = "Veuillez choisir un fichier.";
